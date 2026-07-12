@@ -6,7 +6,7 @@
 
 State of Charge (SOC) estimation for a Panasonic 18650PF cell using a 1RC Thévenin equivalent circuit model, comparing a standard Coulomb Counting estimator against an Extended Kalman Filter (EKF), validated on the UDDS and US06 drive cycles in Simulink.
 
-**[📄 Full Engineering Report (PDF)](report/BMS_SOC_Estimation_Report.pdf)**
+**[📄 Full Engineering Report (PDF)](BMS_SOC_Estimation_Report.pdf)**
 
 ---
 
