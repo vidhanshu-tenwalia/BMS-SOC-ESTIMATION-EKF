@@ -112,34 +112,6 @@ Both estimators run inside a single model ([`model/BMS_SOC_Estimation.slx`](Mode
 ## Repository Structure
 
 ```
-BMS-SOC-Estimation-EKF/
-│
-├── model/
-│   └── BMS_SOC_Estimation.slx          # Simulink model (CC + EKF, side by side)
-│
-├── scripts/
-│   ├── estimate_soc.m                  # Core EKF SOC estimator
-│   ├── validate_all_cycles.m           # Runs UDDS + US06 validation, computes RMSE
-│   ├── tune_ekf_params.m               # Initial Q/R grid search
-│   ├── diagnose_us06_ekf.m             # Diagnoses US06 instability from UDDS-only tuning
-│   ├── tune_ekf_final_refinement.m     # Joint worst-case Q/R optimization
-│   ├── load_for_simulink.m             # Loads drive-cycle + parameter data into the model
-│   └── extract_hppc_params.m           # HPPC parameter extraction (R0, R1, C1, OCV-SOC LUT)
-│
-├── data/
-│   ├── UDDS.mat                        # UDDS drive cycle data
-│   ├── US06.mat                        # US06 drive cycle data
-│   └── HPPC_Data.mat                   # Raw HPPC test data
-│
-├── images/                             # Diagrams and result plots used in this README/report
-│
-├── report/
-│   └── BMS_SOC_Estimation_Report.pdf   # Full engineering report
-│
-├── README.md
-├── LICENSE
-└── .gitignore
-```
 
 ## Software
 
