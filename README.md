@@ -38,7 +38,7 @@ Accurate State of Charge estimation is essential for electric vehicles because i
 
 A jointly-tuned EKF holds SOC error to **0.93–0.95%** across both drive cycles, while Coulomb Counting swings **0.79–3.81%** depending on driving style. The EKF trades a small amount of best-case accuracy for a ~5x reduction in worst-case error — the property that actually matters for a BMS deployed in unpredictable, real-world conditions.
 
-![RMSE Comparison](images/RMSE_Comparison.png)
+![RMSE Comparison](Images/RMSE_Comparison.png)
 
 ---
 
@@ -50,7 +50,7 @@ Unlike Coulomb Counting, the Extended Kalman Filter continuously fuses current i
 
 ## Project Architecture
 
-![Project Architecture](images/Project_Architecture.png)
+![Project Architecture](Images/Project_Architecture.png)
 
 HPPC characterization data feeds parameter extraction, which builds the 1RC Thévenin battery model. The same noisy current/voltage signals then drive both estimators — Coulomb Counting and the EKF — so the final RMSE comparison isolates the estimation algorithm as the only variable.
 
@@ -62,7 +62,7 @@ HPPC characterization data feeds parameter extraction, which builds the 1RC Thé
 |---|---|---|---|
 | Panasonic 18650PF | NCA | 2.9 Ah | 3.6 V |
 
-Parameters were extracted from real Hybrid Pulse Power Characterization (HPPC) test data using [`scripts/extract_hppc_params.m`](scripts/extract_hppc_params.m):
+Parameters were extracted from real Hybrid Pulse Power Characterization (HPPC) test data using [`scripts/extract_hppc_params.m`](Scripts/extract_hppc_params.m):
 
 | Parameter | Value | Method |
 |---|---|---|
@@ -72,8 +72,8 @@ Parameters were extracted from real Hybrid Pulse Power Characterization (HPPC) t
 | τ | 12.52 s | Relaxation curve fit |
 | OCV–SOC | 15-point LUT | 66 fully-relaxed rest periods (>1000 s) |
 
-![HPPC Extraction](images/HPPC_Extraction.png)
-![OCV-SOC Curve](images/OCV_SOC_Curve.png)
+![HPPC Extraction](Images/HPPC_Extraction.png)
+![OCV-SOC Curve](Images/OCV_SOC_Curve.png)
 
 ## EKF Formulation
 
@@ -84,30 +84,30 @@ The EKF treats SOC and RC-branch voltage V1 as a two-state system. Each cycle:
 3. **Kalman gain** — weigh model trust vs. measurement trust based on current uncertainty.
 4. **Correction** — apply the weighted residual to update SOC, V1, and the error covariance.
 
-![EKF Workflow](images/EKF_Workflow.png)
+![EKF Workflow](Images/EKF_Workflow.png)
 
-Full state-space equations and the OCV(SOC) Jacobian linearization are in the [PDF report](report/BMS_SOC_Estimation_Report.pdf).
+Full state-space equations and the OCV(SOC) Jacobian linearization are in the [PDF report](Report/BMS_SOC_Estimation_Report.pdf).
 
 ## Filter Tuning
 
-![Tuning Process](images/Tuning_Process.png)
+![Tuning Process](Images/Tuning_Process.png)
 
-Naively tuning Q/R against UDDS alone achieved 0.51% RMSE on UDDS but **diverged to 4.44%** on US06 — a classic overfitting failure. A joint-optimization routine minimizing worst-case RMSE across both cycles simultaneously (Q = diag([1e-11, 1e-6]), R = 10.0) traded a small amount of peak UDDS accuracy for stability across both cycles. See [`scripts/tune_ekf_params.m`](scripts/tune_ekf_params.m), [`scripts/diagnose_us06_ekf.m`](scripts/diagnose_us06_ekf.m), and [`scripts/tune_ekf_final_refinement.m`](scripts/tune_ekf_final_refinement.m) for the tuning progression.
+Naively tuning Q/R against UDDS alone achieved 0.51% RMSE on UDDS but **diverged to 4.44%** on US06 — a classic overfitting failure. A joint-optimization routine minimizing worst-case RMSE across both cycles simultaneously (Q = diag([1e-11, 1e-6]), R = 10.0) traded a small amount of peak UDDS accuracy for stability across both cycles. See [`scripts/tune_ekf_params.m`](Scripts/tune_ekf_params.m), [`scripts/diagnose_us06_ekf.m`](Scripts/diagnose_us06_ekf.m), and [`scripts/tune_ekf_final_refinement.m`](Scripts/tune_ekf_final_refinement.m) for the tuning progression.
 
 ## Results by Drive Cycle
 
 <table>
 <tr>
-<td><img src="images/UDDS_Result.png" alt="UDDS Result"></td>
-<td><img src="images/US06_Result.png" alt="US06 Result"></td>
+<td><img src="Images/UDDS_Result.png" alt="UDDS Result"></td>
+<td><img src="Images/US06_Result.png" alt="US06 Result"></td>
 </tr>
 </table>
 
 ## Simulink Implementation
 
-![Simulink Model](images/Simulink_Model.png)
+![Simulink Model](Images/Simulink_Model.png)
 
-Both estimators run inside a single model ([`model/BMS_SOC_Estimation.slx`](model/BMS_SOC_Estimation.slx)) against identical noisy current/voltage inputs, so the RMSE comparison isolates the estimation algorithm as the only variable.
+Both estimators run inside a single model ([`model/BMS_SOC_Estimation.slx`](Model/BMS_SOC_Estimation.slx)) against identical noisy current/voltage inputs, so the RMSE comparison isolates the estimation algorithm as the only variable.
 
 ## Repository Structure
 
