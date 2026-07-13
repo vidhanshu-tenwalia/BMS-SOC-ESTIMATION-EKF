@@ -109,7 +109,6 @@ Naively tuning Q/R against UDDS alone achieved 0.51% RMSE on UDDS but **diverged
 
 Both estimators run inside a single model ([`model/BMS_SOC_Estimation.slx`](Model/BMS_SOC_Estimation.slx)) against identical noisy current/voltage inputs, so the RMSE comparison isolates the estimation algorithm as the only variable.
 
-## Repository Structure
 
 ```
 
